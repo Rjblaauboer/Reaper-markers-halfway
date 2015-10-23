@@ -66,7 +66,13 @@ with open("markers.txt") as f, open("markers-halfway.txt","w") as n:
    line = f.readline()
    while line != "":
        in_data = line
+       line_next = f.readline()
        out_data, time_previous = markers_halfway(in_data, time_previous)
        n.write("%s" % out_data)
-       line = f.readline()
+       if line_next == "": #it will duplicate the last line with updated ID and original time
+           line_tmp = line.split()
+           line_tmp[0] = str(int(line_tmp[0]) + 1)
+           line_tmp = " ".join(line_tmp)
+           n.write("%s" % line_tmp)
+       line = line_next
    
