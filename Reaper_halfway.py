@@ -50,9 +50,16 @@ def markers_halfway(in_data, time_previous):   # takes one line of text and the 
     return (markers_tmp, time_current.group(0))
 
 
+def cleanup(in_data):
+    cl_tmp = in_data
 
+    re_1 = re.compile(r"(?<=[\"]).*(?=[\"])")
+    result = re.search(re_1, cl_tmp)
+    if result:
+        result = ''.join(e for e in result.group(0) if e.isalnum())
+        cl_tmp = re.sub(re_1, result, cl_tmp)
 
-
+    return cl_tmp
 
 
 
@@ -65,8 +72,8 @@ time_previous = "NULL"
 with open("markers.txt") as f, open("markers-halfway.txt","w") as n:
    line = f.readline()
    while line != "":
-       in_data = line
-       line_next = f.readline()
+       in_data = cleanup(line) #cleanup will remove all none alphanumeric characters in marker name
+       line_next = cleanup(f.readline())
        out_data, time_previous = markers_halfway(in_data, time_previous)
        n.write("%s" % out_data)
        if line_next == "": #it will duplicate the last line with updated ID and original time
