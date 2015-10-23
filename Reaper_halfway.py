@@ -16,8 +16,7 @@ import re
 
 def markers_halfway(in_data, time_previous):   # takes one line of text and the marker time of the previous line
                                 # if time is NULL it is assumed that this is the first marker
-    markers_tmp = " ".join(in_data)
-    print(markers_tmp)
+    markers_tmp = in_data
 
 
     #Replace marker times with marker times at halfway point
@@ -60,18 +59,14 @@ def markers_halfway(in_data, time_previous):   # takes one line of text and the 
 #Output list as new file
 
 #import marker file as .txt file
-f = open("markers.txt")
-n = open("markers_halfway.txt", 'w')
+#f = open("markers.txt")
+#n = open("markers_halfway.txt", 'w')
 time_previous = "NULL"
-for line in f:
-    in_data = line.split()
-    print("###############ORIGINAL DATA##################")
-    print(in_data)
-    print("##############################################")
-    print()
-#change time of markers
-    out_data, time_previous = markers_halfway(in_data, time_previous)
-    n.write(out_data)
-    print("################PROCESSED#####################")
-    print(out_data + '\n')
-    print("##############################################")
+with open("markers.txt") as f, open("markers-halfway.txt","w") as n:
+   line = f.readline()
+   while line != "":
+       in_data = line
+       out_data, time_previous = markers_halfway(in_data, time_previous)
+       n.write("%s" % out_data)
+       line = f.readline()
+   
